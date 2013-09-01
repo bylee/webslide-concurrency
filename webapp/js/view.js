@@ -5,9 +5,6 @@
 			return ret;
 		}
 
-		for ( var k in ret ) {
-			ret[k] = json( ret[k] );
-		}
 		return ret;
 	};
 	View = Backbone.View.extend( {

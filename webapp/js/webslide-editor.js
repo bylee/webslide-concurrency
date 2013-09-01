@@ -19,29 +19,35 @@
 				autoScrollingEasing:"easeInOutQuad", 
 				autoScrollingDelay:500 
 			};
-			this.$el.thumbnailScroller( options.scroll );
+			this.scroll = options.scroll;
 			this.slide = options.slide;
 			options.slide.on( 'load', this.renderThumbnail, this );
 		},
 		renderThumbnail: function() {
+			console.log( 'r2' );
 			var contents =this.slide.get( 'contents' );
-			var $el = this.$( '.jTscroller' );
+			var $el = this.$el.find( '.jTscroller' );
 			_.each( this.slide.get( 'pages' ), function( pid ) {
-				$el.append( new SlidePageThumbnail( { contents: contents[pid] } ).render().$el );
+				$el.append( new SlidePageThumbnail( { model: contents[pid] } ).render().$el );
+				console.log( 'a' );
 			} );
+			console.log( $el );
+			this.$el.thumbnailScroller( this.scroll );
 		}
 	} );
 	SlidePageThumbnail = View.extend( {
 		tagName: 'a',
 		template: 'tmpl-thumbnail',
 		init: function( options ) {
-			console.log( '-', options.contents );
+			console.log( this.model.get( 'id' ) );
+			this.$el.append( this.$contents = $( '<div></div>' ) );
+			this.$contents.text( this.model.get( 'id' ) );
 		}
 	} );
 
 	SlideEditor = View.extend( {
-		initialize: function() {
-			this.navigator = new SlidePageNavigator( { el: this.$navigator, slide: this.model } );
+		initialize: function( options ) {
+			this.navigator = new SlidePageNavigator( { el: options.$navigator, slide: this.model } ).render();
 			this.editor = new SlidePageEditor( { el: this.$editor } );
 			this.model.on( 'load', this.render, this );
 			this.model.fetch();
@@ -56,8 +62,6 @@
 				this.mode = 'wait';
 				return this;
 			}
-
-			this.$el.append( this.navigator.render().$el );
 
 			this.spinner.destroy();
 

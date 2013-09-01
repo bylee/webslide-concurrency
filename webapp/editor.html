@@ -28,7 +28,11 @@
 
 	<script type="text/javascript">
 		$( function() {
-			$( 'body' ).append( new SlideEditor( { model: new Slide( { id: 'concurrency' } ) } ).render().$el );
+			new SlideEditor( {
+				el: $( 'body' ),
+				$navigator: $( '#navigator' ),
+				model: new Slide( { id: 'concurrency' } )
+			} ).render();
 		} );
 	</script>
 </body>
