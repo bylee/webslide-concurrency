@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Logging</title>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/lodash.js"></script>
+	<script type="text/javascript" src="js/backbone.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/spin.js"></script>
+	<script type="text/javascript" src="js/classList.js"></script>
+	<script type="text/javascript" src="js/reveal.js"></script>
+	<script type="text/javascript" src="js/model.js"></script>
+	<script type="text/javascript" src="js/view.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/reveal.css" />
+	<!-- default, beige, sky, night, serif, simple -->
+	<link rel="stylesheet" href="css/reveal-theme/night.css" id="theme"/>
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+	<script type="text/javascript">
+		$( function() {
+			$( 'body' ).append( new SlideShow( { model: new Slide( { id: 'concurrency' } ) } ).render().$el );
+		} );
+	</script>
+</body>
+</html>
