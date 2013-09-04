@@ -4,7 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Logging</title>
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/jquery.thumbnailScroller.js"></script>
+	<script type="text/javascript" src="js/codemirror.js"></script>
+	<script type="text/javascript" src="js/addon/hint/html-hint.js"></script>
 
 	<script type="text/javascript" src="js/lodash.js"></script>
 	<script type="text/javascript" src="js/backbone.js"></script>
@@ -14,39 +15,41 @@
 	<script type="text/javascript" src="js/webslide-editor.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 
-	<link rel="stylesheet" href="css/jquery.thumbnailScroller.css" />
-	<link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="css/reveal.css" />
+	<link rel="stylesheet" href="css/codemirror.css" />
 	<!-- default, beige, sky, night, serif, simple -->
 	<link rel="stylesheet" href="css/reveal-theme/night.css" id="theme"/>
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 	<div id="navigator"></div>
-	<div id="editor"></div>
-
+	<textarea id="editor" spellcheck="false"></textarea>
 
 	<script type="text/javascript">
 		$( function() {
 			new SlideEditor( {
 				el: $( 'body' ),
 				$navigator: $( '#navigator' ),
+				$editor: $( '#editor' ),
 				model: new Slide( { id: 'concurrency' } )
 			} ).render();
 		} );
 	</script>
 </body>
+
 	<script id="tmpl-navigator" type="text/template">
-		<div class="jThumbnailScroller" >
-			<div class="jTscrollerContainer">
-				<div class="jTscroller" style="width: 80px;">
-				</div>
+		<div class="scroller">
+			<div class="scroller-controls">
+				<div class="clickable scrollerButton scrollerPrevButton" />
+				<div class="clickable scrollerButton scrollerNextButton" />
 			</div>
-			<a href="#" class="jTscrollerPrevButton"></a>
-			<a href="#" class="jTscrollerNextButton"></a>
+			<div class="scroll-contents">
+			</div>
 		</div>
 	</script>
+
 	<script id="tmpl-thumbnail" type="text/template">
-		<div>Hello</div>
+		<div class="clickable"><%= id %></div>
 	</script>
+
 </html>

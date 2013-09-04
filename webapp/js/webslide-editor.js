@@ -1,12 +1,21 @@
 ( function() {
 	SlidePageEditor = View.extend( {
+		init: function() {
+			this.editor = CodeMirror.fromTextArea( this.el, {
+				mode: 'text/html'
+			} );
+		},
+		setContents: function( text ) {
+			console.log( this.$el );
+			this.$el.html( text );
+		}
 	} );
 
 	SlidePageNavigator = View.extend( {
 		template: 'tmpl-navigator',
 		init: function( options ) {
-			options.scroll = options.scroll || {
-				scrollerType:"clickButtons", 
+			this.scroll = options.scroll || {
+				scrollerType:"hoverPrecise", 
 				scrollerOrientation:"vertical", 
 				scrollSpeed:2, 
 				scrollEasing:"easeOutCirc", 
@@ -19,36 +28,44 @@
 				autoScrollingEasing:"easeInOutQuad", 
 				autoScrollingDelay:500 
 			};
-			this.scroll = options.scroll;
 			this.slide = options.slide;
+			this.editor = options.editor;	// SlideEditor
 			options.slide.on( 'load', this.renderThumbnail, this );
 		},
+
 		renderThumbnail: function() {
-			console.log( 'r2' );
-			var contents =this.slide.get( 'contents' );
-			var $el = this.$el.find( '.jTscroller' );
+			var contents = this.slide.get( 'contents' );	// SlidePage
+			var $el = this.$el.find( '.scroll-contents' );
+			var that = this;
 			_.each( this.slide.get( 'pages' ), function( pid ) {
-				$el.append( new SlidePageThumbnail( { model: contents[pid] } ).render().$el );
-				console.log( 'a' );
+				$el.append( new SlidePageThumbnail( { parent: that, model: contents[pid] } ).render().$el );
 			} );
-			console.log( $el );
-			this.$el.thumbnailScroller( this.scroll );
+		},
+
+		onSelect: function( selectedPage ) {
+			this.options.editor.setContents( selectedPage.get( 'html' ) );
 		}
 	} );
+
 	SlidePageThumbnail = View.extend( {
 		tagName: 'a',
 		template: 'tmpl-thumbnail',
-		init: function( options ) {
-			console.log( this.model.get( 'id' ) );
-			this.$el.append( this.$contents = $( '<div></div>' ) );
-			this.$contents.text( this.model.get( 'id' ) );
+		events: {
+			click: 'onClick'
+		},
+		onClick: function() {
+			this.options.parent.onSelect( this.model );
 		}
 	} );
 
 	SlideEditor = View.extend( {
 		initialize: function( options ) {
-			this.navigator = new SlidePageNavigator( { el: options.$navigator, slide: this.model } ).render();
-			this.editor = new SlidePageEditor( { el: this.$editor } );
+			this.editor = new SlidePageEditor( { el: options.$editor } );
+			this.navigator = new SlidePageNavigator( {
+				el: options.$navigator,
+				editor: this.editor,
+				slide: this.model
+			} ).render();
 			this.model.on( 'load', this.render, this );
 			this.model.fetch();
 		},
@@ -66,7 +83,7 @@
 			this.spinner.destroy();
 
 			return this;
-		}
+		},
 	} );
 
 } ) ();

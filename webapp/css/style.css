@@ -1,6 +1,9 @@
 html, body {
 	height: 100%;
 }
+.clickable {
+	cursor: pointer;
+}
 .curton {
 	display: block;
 	height: 100%;
@@ -14,4 +17,64 @@ html, body {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+}
+
+body {
+}
+
+#navigator {
+	float: left;
+	height: 100%;
+}
+
+#editor {
+	float: right;
+	height: 100%;
+	width: 650px;
+}
+
+.scroller {
+	height: 100%;
+	overflow: hidden;
+}
+
+.scroller-controls {
+	display: block;
+	width: 100%;
+	height: 40px;
+}
+
+.scroll-contents {
+	color: white;
+}
+
+.scrollerButton {
+	width: 40px;
+	height: 40px;
+}
+
+.scrollerPrevButton {
+	background-image: url( '../img/prevArrow.png' );
+	float: left;
+}
+
+.scrollerNextButton {
+	background-image: url( '../img/nextArrow.png' );
+	float: right;
+}
+
+.scroll-contents a {
+	display: block;
+	height: 80px;
+	width: 100px;
+	text-align: center;
+	text-height: 80px;
+	box-shadow: inset 0px 0px 9px #888;
+	margin: 10px;
+	padding: 10px;
+}
+.scroll-contents div {
+	height: 100%;
+	text-height: 100%;
+	overflow: hidden;
 }
