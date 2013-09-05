@@ -1,14 +1,25 @@
 ( function() {
 	SlidePageEditor = View.extend( {
-		init: function() {
-			this.editor = CodeMirror.fromTextArea( this.el, {
-				mode: 'text/html'
+		init: function( options ) {
+			var model = this.model;
+			var editor = this.editor = ace.edit( "editor" );
+			this.editor.setTheme( "ace/theme/twilight" );
+			this.editor.setFontSize( 15 );
+			this.editor.moveCursorTo( 1, 1 );
+			this.editor.getSession().setMode( "ace/mode/html" );
+			this.editor.commands.addCommand( {
+				name: 'Save file',
+				bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
+				exec: function() { model.save( editor.getValue() ); }
 			} );
 		},
+
 		setContents: function( text ) {
 			console.log( this.$el );
-			this.$el.html( text );
-		}
+			this.editor.setValue( text );
+			this.editor.clearSelection();
+			this.editor.focus();
+		},
 	} );
 
 	SlidePageNavigator = View.extend( {
@@ -28,22 +39,26 @@
 				autoScrollingEasing:"easeInOutQuad", 
 				autoScrollingDelay:500 
 			};
-			this.slide = options.slide;
 			this.editor = options.editor;	// SlideEditor
-			options.slide.on( 'load', this.renderThumbnail, this );
+			this.model.on( 'load', this.renderThumbnail, this );
+			this.model.on( 'selectionChange', this.onSelected, this );
 		},
 
 		renderThumbnail: function() {
-			var contents = this.slide.get( 'contents' );	// SlidePage
+			var contents = this.model.get( 'contents' );	// SlidePage
 			var $el = this.$el.find( '.scroll-contents' );
 			var that = this;
-			_.each( this.slide.get( 'pages' ), function( pid ) {
+			_.each( this.model.get( 'pages' ), function( pid ) {
 				$el.append( new SlidePageThumbnail( { parent: that, model: contents[pid] } ).render().$el );
 			} );
+			this.onSelected( contents[this.model.selected] );
 		},
 
-		onSelect: function( selectedPage ) {
-			this.options.editor.setContents( selectedPage.get( 'html' ) );
+		onSelected: function( selectedPage ) {
+			console.log( selectedPage );
+			if ( selectedPage ) {
+				this.options.editor.setContents( selectedPage.get( 'html' ) );
+			}
 		}
 	} );
 
@@ -54,17 +69,17 @@
 			click: 'onClick'
 		},
 		onClick: function() {
-			this.options.parent.onSelect( this.model );
+			this.options.parent.model.onSelected( this.model.get( 'id' ) );
 		}
 	} );
 
 	SlideEditor = View.extend( {
 		initialize: function( options ) {
-			this.editor = new SlidePageEditor( { el: options.$editor } );
+			this.editor = new SlidePageEditor( { model: this.model } );
 			this.navigator = new SlidePageNavigator( {
 				el: options.$navigator,
-				editor: this.editor,
-				slide: this.model
+				model: this.model,
+				editor: this.editor
 			} ).render();
 			this.model.on( 'load', this.render, this );
 			this.model.fetch();

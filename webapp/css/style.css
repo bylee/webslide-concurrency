@@ -25,12 +25,19 @@ body {
 #navigator {
 	float: left;
 	height: 100%;
+	width: 140px;
 }
 
 #editor {
 	float: right;
 	height: 100%;
-	width: 650px;
+	display: block;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 140px;
+
 }
 
 .scroller {
@@ -53,13 +60,18 @@ body {
 	height: 40px;
 }
 
-.scrollerPrevButton {
+.prevButton {
 	background-image: url( '../img/prevArrow.png' );
 	float: left;
 }
 
-.scrollerNextButton {
+.nextButton {
 	background-image: url( '../img/nextArrow.png' );
+	float: left;
+}
+
+.newButton {
+	background-image: url( '../img/newPage.png' );
 	float: right;
 }
 
@@ -70,7 +82,7 @@ body {
 	text-align: center;
 	text-height: 80px;
 	box-shadow: inset 0px 0px 9px #888;
-	margin: 10px;
+	margin: 20px;
 	padding: 10px;
 }
 .scroll-contents div {

@@ -4,8 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Logging</title>
 	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/codemirror.js"></script>
-	<script type="text/javascript" src="js/addon/hint/html-hint.js"></script>
+	<script type="text/javascript" src="js/ace/ace.js"></script>
 
 	<script type="text/javascript" src="js/lodash.js"></script>
 	<script type="text/javascript" src="js/backbone.js"></script>
@@ -15,15 +14,13 @@
 	<script type="text/javascript" src="js/webslide-editor.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 
-	<link rel="stylesheet" href="css/reveal.css" />
-	<link rel="stylesheet" href="css/codemirror.css" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
 	<!-- default, beige, sky, night, serif, simple -->
-	<link rel="stylesheet" href="css/reveal-theme/night.css" id="theme"/>
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 	<div id="navigator"></div>
-	<textarea id="editor" spellcheck="false"></textarea>
+	<div id="editor"></div>
 
 	<script type="text/javascript">
 		$( function() {
@@ -40,8 +37,9 @@
 	<script id="tmpl-navigator" type="text/template">
 		<div class="scroller">
 			<div class="scroller-controls">
-				<div class="clickable scrollerButton scrollerPrevButton" />
-				<div class="clickable scrollerButton scrollerNextButton" />
+				<span class="clickable glyphicon glyphicon-chevron-left"/>
+				<span class="clickable glyphicon glyphicon-chevron-right"/>
+				<span class="clickable glyphicon glyphicon-plus"/>
 			</div>
 			<div class="scroll-contents">
 			</div>

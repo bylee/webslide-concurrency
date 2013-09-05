@@ -123,10 +123,24 @@
 			this.set( 'iPage', 0 );
 			this.set( 'nPage', data.pages.length );
 			this.set( 'contents', contents );
+			this.onSelected( data.pages[0] );
 
 			return ;
 		},
 
+		onSelected: function( id ) {
+			this.selected = id;
+			this.trigger( 'selectionChange', this.get( 'contents' )[id] );
+		},
+
+		save: function( text ) {
+			var selected = this.selected;
+			if ( selected ) {
+				$.ajax( '/pages/' + selected, { type: 'POST', data: text } );
+			}
+
+			console.log( 'save' );
+		},
 		onPageChange: function() {
 			if ( this.get( 'iPage' ) == this.get( 'nPage' ) ) {
 				this.set( 'sid', this.get( 'id' ) );
