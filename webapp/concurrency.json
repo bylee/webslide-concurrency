@@ -1,8 +1,18 @@
 {
 	"sid": "concurrency",
 	"pages": [
-		"cover",
-		"agenda",
-		"concept-title"
+		"concurrency/cover",
+		"concurrency/agenda",
+		"concurrency/concept-title",
+		"concurrency/concept-overview",
+		"concurrency/concept-unsafe",
+		"concurrency/concept-safe",
+		"concurrency/concept-reentrancy",
+		"concurrency/thread-title",
+		"concurrency/thread-overview",
+		"concurrency/thread-state",
+		"concurrency/thread-example",
+		"concurrency/synchronized-title",
+		"concurrency/synchronized-overview"
 		]
 }

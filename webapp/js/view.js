@@ -7,33 +7,6 @@
 
 		return ret;
 	};
-	View = Backbone.View.extend( {
-		initialize: function( options ) {
-			_.bindAll( this );
-			var m = (this.modelClass)?new this.modelClass():new Model();
-			if ( m instanceof Collection ) {
-				this.collection = this.collection || m;
-				this.model = this.model || new Model();
-			} else if ( m instanceof Model ) {
-				this.model = this.model || m;
-			}
-			this.init( options );
-			if ( this.collection ) {
-				this.collection.fetch();
-			}
-			this.$el.attr( 'view-cid', this.cid );
-		},
-		init: function( options ) {
-		},
-		render: function() {
-			var m = json( this.model );
-			this.$el.html( _.template( $( '#' + this.template ).html() )( m ) );
-			return this;
-		},
-		addSubView: function( model ) {
-		}
-	} );
-
 	SpinnerView = View.extend( {
 		className: 'spin',
 		render: function() {

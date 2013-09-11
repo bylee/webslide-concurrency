@@ -1,9 +1,5 @@
 ( function() {
 
-	Router = Backbone.Router;
-	Model = Backbone.Model;
-	Collection = Backbone.Collection;
-
 	SpinnerOption = Model.extend( {
 		defaults: {
 			lines: 13, // The number of lines to draw
@@ -66,7 +62,7 @@
 			progress: false,
 
 			// Push each slide change to the browser history
-			history: false,
+			history: true,
 
 			// Enable keyboard shortcuts for navigation
 			keyboard: true,
@@ -138,10 +134,9 @@
 			if ( selected ) {
 				$.ajax( '/pages/' + selected, { type: 'POST', data: text } );
 			}
-
-			console.log( 'save' );
 		},
-		onPageChange: function() {
+		onPageChange: function( page ) {
+			this.trigger( 'pageChange', page );
 			if ( this.get( 'iPage' ) == this.get( 'nPage' ) ) {
 				this.set( 'sid', this.get( 'id' ) );
 				this.trigger( 'load' );
