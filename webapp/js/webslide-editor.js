@@ -5,6 +5,7 @@
 
 	SlidePageEditor = View.extend( {
 		init: function( options ) {
+			var that = this;
 			var model = this.model;
 			var editor = this.editor = ace.edit( "editor" );
 			this.editor.setBehavioursEnabled( true );
@@ -17,7 +18,7 @@
 			this.editor.commands.addCommand( {
 				name: 'Save file',
 				bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
-				exec: function() { model.save( editor.getValue() ); }
+				exec: function() { model.save( that.page, editor.getValue() ); }
 			} );
 			model.on( 'pageChange', this.onPageChange, this );
 		},
@@ -62,7 +63,6 @@
 			this.editor = options.editor;	// SlideEditor
 			this.model.on( 'load', this.renderThumbnail, this );
 			this.model.on( 'selectionChange', this.onSelected, this );
-			console.log( this.$moveUp );
 		},
 
 		renderThumbnail: function() {
@@ -82,13 +82,14 @@
 			}
 			if ( this.selectedPage ) {
 				this.selectedPage.set( 'selected', null );
+				this.selectedPage.trigger( 'selectionStateChanged' );
 			}
 			if ( selectedPage ) {
 				this.options.editor.setContents( selectedPage );
-				selectedPage.fetch();
 			}
 			this.selectedPage = selectedPage;
 			this.selectedPage.set( 'selected', true );
+			this.selectedPage.trigger( 'selectionStateChanged' );
 		},
 		getSelection: function() {
 			return this.selectedPage;
@@ -195,20 +196,32 @@
 			'click': 'onClick'
 		},
 		init: function() {
-			this.model.on( 'change', this.render, this );
+			var $el = this.$el
+			this.model.on( 'contentChanged', this.contentChanged, this );
+
+			this.model.on( 'selectionStateChanged', this.selectionStateChanged, this );
+			this.$thumbnail = this.$( '.preview-thumbnail' );
+			this.$thumbnail.attr( 'src', '/preview.html?id=' + this.model.get( 'id' ) );
 		},
 
 		render: function() {
-			if ( this.model.get( 'selected' ) ) {
-				this.$el.addClass( 'selected' );
-			} else {
-				this.$el.removeClass( 'selected' );
-			}
+			this.selectionStateChanged();
 			return this;
 		},
 
 		onClick: function() {
 			this.options.parent.model.onSelected( this.model.get( 'id' ) );
+		},
+
+		selectionStateChanged: function() {
+			if ( this.model.get( 'selected' ) ) {
+				this.$el.addClass( 'selected' );
+			} else {
+				this.$el.removeClass( 'selected' );
+			}
+		},
+		contentChanged: function() {
+			this.$thumbnail.attr( 'src', '/preview.html?id=' + this.model.get( 'id' ) );
 		}
 	} );
 
@@ -235,6 +248,7 @@
 			}
 
 			this.spinner.destroy();
+			this.navigator.onSelected( this.model.get( 'contents' )[this.model.get( 'pages' )[0]] );
 
 			return this;
 		},

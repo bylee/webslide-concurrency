@@ -24,8 +24,8 @@
 			var slide = this.get( 'slide' );
 			$.get( '/pages/' + this.get( 'id' ), function( html ) {
 				page.set( 'html', html );
-				slide.set( 'iPage', slide.get( 'iPage' ) + 1 );
-				page.trigger( 'change' );
+				page.set( 'loaded', true );
+				page.trigger( 'contentChanged', page );
 			} );
 		}
 	} );
@@ -110,18 +110,30 @@
 			var contents = {};
 			_.each( data.pages, function( pid ) {
 				page = new SlidePage( { slide: slide, id: pid } );
-				page.on( 'change', slide.onPageChange, slide );
 				page.fetch();
-				contents[pid] = page;
+				slide.addPage( page );
 			} );
 
-			this.set( 'pages', data.pages );
-			this.set( 'iPage', 0 );
-			this.set( 'nPage', data.pages.length );
-			this.set( 'contents', contents );
 			this.onSelected( data.pages[0] );
 
 			return ;
+		},
+
+		addPage: function( page ) {
+			var pid = page.get( 'id' );
+
+			var pages = this.get( 'pages' );
+			if ( !pages ) {
+				this.set( 'pages', pages = [] );
+			}
+			pages.push( pid );
+
+			var contents = this.get( 'contents' );
+			if ( !contents ) {
+				this.set( 'contents', contents = {} );
+			}
+			contents[pid] = page;
+			page.on( 'contentChanged', this.onPageChange, this );
 		},
 
 		onSelected: function( id ) {
@@ -129,21 +141,29 @@
 			this.trigger( 'selectionChange', this.get( 'contents' )[id] );
 		},
 
-		save: function( text ) {
+		save: function( page, text ) {
 			var selected = this.selected;
 			if ( selected ) {
-				$.ajax( '/pages/' + selected, { type: 'POST', data: text } );
+				$.ajax( '/pages/' + selected, { type: 'POST', data: text, success: function() {
+					page.set( 'html', text );
+					page.trigger( 'contentChanged' );
+				} } );
 			}
 		},
 		onPageChange: function( page ) {
 			this.trigger( 'pageChange', page );
-			if ( this.get( 'iPage' ) == this.get( 'nPage' ) ) {
+
+			var contents = this.get( 'contents' );
+			if ( this.get( 'pages' ) && _.all( this.get( 'pages' ), function( pid ) {
+				return contents[pid].get( 'loaded' )
+			} ) ) {
+				if ( this.initialized ) {
+					return ;
+				}
 				this.set( 'sid', this.get( 'id' ) );
 				this.trigger( 'load' );
+				this.initialized = true;
 			}
 		}
 	} );
-
-
-
 } ) ();

@@ -28,6 +28,7 @@
 		className: 'slides',
 		render: function() {
 			this.$el.html( this.model.get( 'html' ) );
+			this.$el.find( 'section' ).attr( 'id', this.model.get( 'id' ) );
 			return this;
 		}
 	} );
@@ -36,20 +37,27 @@
 		className: 'reveal',
 		initialize: function() {
 			this.model.on( 'load', this.render, this );
-			this.model.fetch();
 		},
 		render: function() {
-			if ( !this.model.get( 'sid' ) ) {
-				if ( this.mode == 'wait' ) {
-					return this;
-				}
-				this.spinner = new SpinnerView( { model: new SpinnerOption() } );
-				this.$el.append( this.spinner.render().$el );
-				this.mode = 'wait';
+			var contents = this.model.get( 'contents' );
+			if ( !contents ) {
 				return this;
 			}
+			for ( pid in contents ) {
+				if ( !contents[pid].get( 'loaded' ) ) {
+					if ( this.mode == 'wait' ) {
+						return this;
+					}
+					this.spinner = new SpinnerView( { model: new SpinnerOption() } );
+					this.$el.append( this.spinner.render().$el );
+					this.mode = 'wait';
+					return this;
+				}
+			}
+			if ( this.spinner ) {
+				this.spinner.destroy();
+			}
 
-			var contents = this.model.get( 'contents' );
 			var pageIds = this.model.get( 'pages' );
 			var that = this;
 			_.each( pageIds, function( pid ) {
@@ -57,7 +65,6 @@
 
 				that.$el.append( pageView.render().$el );
 			} );
-			this.spinner.destroy();
 
 			Reveal.initialize( this.model.toJSON() );
 

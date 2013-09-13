@@ -25,7 +25,29 @@ body {
 #navigator {
 	float: left;
 	height: 100%;
-	width: 140px;
+	width: 200px;
+}
+.preview {
+	position: relative;
+}
+
+.preview > * {
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	display: inline;
+	position: absolute;
+}
+
+.preview-thumbnail {
+	zoom: 0.4;
+	-moz-transform: scale(0.4);
+	-moz-transform-origin: 0 0;
+	-o-transform: scale(0.4);
+	-o-transform-origin: 0 0;
+	-webkit-transform: scale(0.4);
+	-webkit-transform-origin: 0 0;
 }
 
 #editor {
@@ -36,7 +58,7 @@ body {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 155px;
+	left: 230px;
 
 }
 
@@ -79,13 +101,13 @@ body {
 
 .scroll-contents a {
 	display: block;
-	height: 80px;
-	width: 100px;
+	height: 153px;
+	width: 172px;
 	text-align: center;
 	text-height: 80px;
 	box-shadow: inset 0px 0px 9px #888;
 	margin: 20px;
-	padding: 10px;
+	padding: 4px;
 }
 .scroll-contents .selected {
 	box-shadow: inset 0px 0px 9px red;
