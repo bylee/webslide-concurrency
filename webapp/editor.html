@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Logging</title>
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="js/ace/ace.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 
@@ -21,7 +22,7 @@
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-	<div id="navigator"></div>
+	<div id="navigator" class="horizontal"></div>
 	<div id="editor"></div>
 
 	<script type="text/javascript">
@@ -50,9 +51,22 @@
 		</div>
 	</script>
 
+	<script id="tmpl-horizontal-navigator" type="text/template">
+		<div class="scroller-controls">
+			<span id="moveUp" class="clickable glyphicon glyphicon-arrow-up"/>
+			<span id="moveDown" class="clickable glyphicon glyphicon-arrow-down"/>
+			<span id="addPage" class="clickable glyphicon glyphicon-plus"/>
+			<span id="removePage" class="clickable glyphicon glyphicon-remove"/>
+		</div>
+		<div class="scroll-container">
+			<div class="scroll-contents">
+			</div>
+		</div>
+	</script>
+
 	<script id="tmpl-thumbnail" type="text/template">
 		<div class="clickable preview">
-			<iframe id="<%= id %>-workspace" class="preview-thumbnail" width="1024px" height="900px" ></iframe>
+			<iframe id="<%= id %>-workspace" class="preview-thumbnail" ></iframe>
 			<div class="protection"></div>
 		</div>
 	</script>
@@ -89,4 +103,3 @@
 		</form>
 	</script>
 </html>
-<!--

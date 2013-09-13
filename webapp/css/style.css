@@ -22,11 +22,68 @@ html, body {
 body {
 }
 
-#navigator {
+#navigator.horizontal
+{
+	display: inline;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 150px;
+}
+
+#navigator.vertical {
 	float: left;
 	height: 100%;
 	width: 200px;
 }
+#navigator.horizontal .scroller-controls {
+	top: 0px;
+	left: 0px;
+	width: 40px;
+	height: 100%;
+
+}
+
+#navigator.horizontal .scroll-container {
+	top: 0px;
+	left: 40px;
+	right: 0px;
+	height: 100%;
+}
+
+#navigator.horizontal+#editor {
+	display: block;
+	position: absolute;
+	top: 160px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+}
+
+#navigator.horizontal .scroll-container {
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-base-color: #C0C0C0;
+	scrollbar-base-color: #C0C0C0;
+	scrollbar-3dlight-color: #C0C0C0;
+	scrollbar-highlight-color: #C0C0C0;
+	scrollbar-track-color: #EBEBEB;
+	scrollbar-arrow-color: black;
+	scrollbar-shadow-color: #C0C0C0;
+	scrollbar-dark-shadow-color: #C0C0C0;
+}
+
+#navigator.horizontal .scroll-contents {
+	white-space: nowrap;
+}
+
+#navigator.horizontal .scroll-contents a {
+	display: inline-block;
+	width: 182px;
+	height: 107px;
+}
+
 .preview {
 	position: relative;
 }
@@ -41,18 +98,19 @@ body {
 }
 
 .preview-thumbnail {
-	zoom: 0.4;
-	-moz-transform: scale(0.4);
+	width: 1920px;
+	height: 1080px;
+	zoom: 0.3;
+	-moz-transform: scale(0.3);
 	-moz-transform-origin: 0 0;
-	-o-transform: scale(0.4);
+	-o-transform: scale(0.3);
 	-o-transform-origin: 0 0;
-	-webkit-transform: scale(0.4);
+	-webkit-transform: scale(0.3);
 	-webkit-transform-origin: 0 0;
 }
 
 #editor {
 	float: right;
-	height: 100%;
 	display: block;
 	position: absolute;
 	top: 0px;
@@ -96,6 +154,7 @@ body {
 ::-webkit-resizer { background-color: #666;}
 
 .scroll-contents {
+	width: 100%;
 	color: white;
 }
 
