@@ -1,0 +1,27 @@
+<h3>Thread-unsafe</h3>
+<pre>
+    <code class="java">
+    public class Calculator {
+        protected static int result = 0;
+            
+        public static int reset() {
+            result = 0;
+        }
+            
+        public static int add( int value ) {
+            return result += value;
+        }
+            
+        public static int subtract( int value ) {
+            return result -= value;
+        }
+            
+    }
+        
+    ...
+    reset();
+    add( 3 );
+    substract( 1 );
+    System.out.println( subtract( 5 ) );
+    </code>
+</pre>

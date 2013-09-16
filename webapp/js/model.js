@@ -26,6 +26,10 @@
 				page.set( 'html', html );
 				page.set( 'loaded', true );
 				page.trigger( 'contentChanged', page );
+			} ).fail( function() {
+				page.set( 'html', '' );
+				page.set( 'loaded', true );
+				page.trigger( 'contentChanged', page );
 			} );
 		}
 	} );
@@ -34,14 +38,14 @@
 		defaults: {
 			dependencies: [
 				// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-				{ src: '/js/classList.js', condition: function() { return !document.body.classList; } },
+				// { src: '/js/classList.js', condition: function() { return !document.body.classList; } },
 		  
 				// Interpret Markdown in <section> elements
 				//{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 				//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 			
 				// Syntax highlight for <code> elements
-				//{ src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlighting(); } },
 			
 				// Zoom in and out with Alt+click
 				//{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
@@ -59,7 +63,7 @@
 			controls: false,
 
 			// Display a presentation progress bar
-			progress: false,
+			progress: true,
 
 			// Push each slide change to the browser history
 			history: true,
@@ -71,7 +75,7 @@
 			touch: true,
 
 			// Enable the slide overview mode
-			overview: false,
+			overview: true,
 
 			// Vertical centering of slides
 			center: true,
@@ -94,7 +98,7 @@
 			transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
 
 			// Transition speed
-			transitionSpeed: 'default', // default/fast/slow
+			transitionSpeed: 'slow', // default/fast/slow
 
 			// Transition style for full page backgrounds
 			backgroundTransition: 'default' // default/linear/none

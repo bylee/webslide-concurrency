@@ -51,7 +51,6 @@
 			this.model.on( 'load', this.renderThumbnail, this );
 			this.model.on( 'selectionChange', this.onSelected, this );
 			this.$( '.scroll-container' ).mousewheel( function( event, delta ) {
-				console.log( this.scrollLeft );
 				this.scrollLeft -= (delta * 30);
 				event.preventDefault();
 			} );

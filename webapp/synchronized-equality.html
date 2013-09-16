@@ -1,0 +1,26 @@
+<h3>Actually,</h3>
+<pre><code class="java">
+    synchronized public void run() {
+        ...
+    }
+
+    synchronized static public void runStatically() {
+
+    }
+	
+</code></pre>
+is equal to
+<pre><code class="java">
+    public void run() {
+        synchronized ( this ) {
+            ...
+        }
+    }
+
+    public static void run() {
+        synchronized ( ClassName.class ) {
+            ...
+        }
+    }
+</code></pre>
+

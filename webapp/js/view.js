@@ -25,10 +25,10 @@
 	} );
 
 	SlidePageView = View.extend( {
-		className: 'slides',
+		tagName: 'section',
 		render: function() {
 			this.$el.html( this.model.get( 'html' ) );
-			this.$el.find( 'section' ).attr( 'id', this.model.get( 'id' ) );
+			this.$el.attr( 'id', this.model.get( 'id' ) );
 			return this;
 		}
 	} );
@@ -37,6 +37,8 @@
 		className: 'reveal',
 		initialize: function() {
 			this.model.on( 'load', this.render, this );
+			this.$slides = $( '<div class="slides"></div>' );
+			this.$el.html( this.$slides );
 		},
 		render: function() {
 			var contents = this.model.get( 'contents' );
@@ -63,10 +65,10 @@
 			_.each( pageIds, function( pid ) {
 				var pageView = new SlidePageView( { model: contents[pid] } );
 
-				that.$el.append( pageView.render().$el );
+				that.$slides.append( pageView.render().$el );
 			} );
-
-			Reveal.initialize( this.model.toJSON() );
+			var revealOpts = this.model.toJSON();
+			Reveal.initialize( revealOpts );
 
 			return this;
 		}

@@ -1,0 +1,14 @@
+<h3>Synchronized block</h3>
+<ul>
+    <li>The "obj" is a condition variable (nomally monitor).</li>
+    <li>But, act as mutex (cf. java.util.concurrent.Semaphore).</li>
+    <li>Efficient in process and clean up at process end</li>
+    <li>The only thread to lock can unlock</li>
+    <li>The "obj" must not be null.</li>
+</ul>
+<pre><code class="java">
+    synchronized( obj ) {
+        ...
+    }
+
+</code></pre>

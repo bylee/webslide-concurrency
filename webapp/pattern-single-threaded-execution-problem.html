@@ -1,0 +1,48 @@
+<h3>Single threaded execution - problem</h3>
+<pre><code class="java">
+    public class Gate {
+        protected int counter = 0;
+        protected String name = "Unknown";
+        protected String address = "Nowhere";
+        
+        public void move( String name, String address ) {
+            this.counter++;
+            this.name = name;
+            this.address = address;
+            check();
+        }
+            
+        private void check() {
+            if ( name.charAt( 0 ) != address.charAt( 0 ) ) {
+                System.out.println( "Error!!!" );
+            }
+        }
+    }
+    
+    public class User extends Thread {
+        protected final Gate gate;
+        protected final String myName;
+        protected final String myAddress;
+        
+        public User( Gate gate, String name, String address ) {
+            this.gate = gate;
+            this.myName = name;
+            this.myAddress = address;
+        }
+        
+        public void run() {
+            System.out.println( myName + " Start" );
+            
+            while ( true ) {
+                gate.pass( myName, myAddress );
+            }
+    }
+    
+    public class Main {
+        public static void main( String[] args ) {
+            new User( gate, "Alice", "Alaska" ).start();
+            new User( gate, "Bob", "Brazil" ).start();
+            new User( gate, "Chris", "Canada" ).start();
+        }
+    }
+</code></pre>

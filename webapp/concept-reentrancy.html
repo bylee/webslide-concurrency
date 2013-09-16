@@ -1,0 +1,27 @@
+<h3>Reentrancy</h3>
+<pre>
+    <code class="java">
+    public class Calculator {
+        protected int result = 0;
+            
+        public int reset() {
+            result = 0;
+        }
+        
+        public int add( int value ) {
+            return result += value;
+        }
+        
+        public int subtract( int value ) {
+            return result -= value;
+        }
+        
+    }
+        
+    ...
+    Calculator calc = new Calculator();
+    calc.add( 3 );
+    calc.substract( 1 );
+    System.out.println( calc.subtract( 5 ) );
+    </code>
+</pre>
