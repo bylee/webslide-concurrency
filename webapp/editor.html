@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Logging</title>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="js/ace/ace.js"></script>
@@ -26,12 +25,28 @@
 
 	<script type="text/javascript">
 		$( function() {
+			var slide = new Slide( { id: 'concurrency' } );
 			new SlideEditor( {
 				el: $( 'body' ),
 				$navigator: $( '#navigator' ),
 				$editor: $( '#editor' ),
-				model: new Slide( { id: 'concurrency' } )
+				model: slide
 			} ).render();
+
+			Controller = Router.extend( {
+				routes: {
+					':pid': 'moveToPage'
+				},
+
+				moveToPage: function( pid ) {
+					var pages = slide.get( 'pages' );
+					document.title = pid;
+					slide.onSelected( pid );
+				}
+			} );
+			controller = new Controller();
+
+			Backbone.history.start();
 
 		} );
 	</script>

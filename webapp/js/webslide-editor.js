@@ -20,6 +20,16 @@
 				bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
 				exec: function() { model.save( that.page, editor.getValue() ); }
 			} );
+			this.editor.commands.addCommand( {
+				name: 'Next Page',
+				bindKey: { win: 'Ctrl-Down', mac: 'Command-Down' },
+				exec: function() { options.parent.navigate( 1 ); }
+			} );
+			this.editor.commands.addCommand( {
+				name: 'Previous Page',
+				bindKey: { win: 'Ctrl-Up', mac: 'Command-Up' },
+				exec: function() { options.parent.navigate( -1 ); }
+			} );
 			model.on( 'pageChange', this.onPageChange, this );
 		},
 
@@ -61,8 +71,12 @@
 			var $el = this.$el.find( '.scroll-contents' );
 			var that = this;
 			$el.empty();
+			var $thumbnails = this.$thumbnails = [];
 			_.each( this.model.get( 'pages' ), function( pid ) {
-				$el.append( new SlidePageThumbnail( { parent: that, model: contents[pid] } ).render().$el );
+				var thumbnail = new SlidePageThumbnail( { parent: that, model: contents[pid] } );
+				$thumbnails.push( thumbnail );
+				$el.append( thumbnail.render().$el );
+				thumbnail.show();
 			} );
 			this.onSelected( contents[this.model.selected] );
 		},
@@ -178,9 +192,6 @@
 		removePage: function() {
 			console.log( 'remove' );
 		},
-		scroll: function() {
-			console.log( 'scroll' );
-		}
 	} );
 
 	SlidePageThumbnail = View.extend( {
@@ -213,15 +224,34 @@
 			} else {
 				this.$el.removeClass( 'selected' );
 			}
+			this.show();
 		},
 		contentChanged: function() {
 			this.$thumbnail.attr( 'src', '/preview.html?id=' + this.model.get( 'id' ) );
+		},
+		show: function() {
+			if ( !this.model.get( 'selected' ) ) {
+				return ;
+			}
+			var position = this.$el.position();
+			var current = this.$el.parent().parent().scrollLeft();
+			var left = position.left;
+			var moveTo = current + left;
+
+			var containerWidth = this.$el.parent().width();
+			var width = this.$el.outerWidth( true );
+
+			if ( position.left < 0 ) {
+				this.$el.parent().parent().scrollLeft( moveTo );
+			} else if ( containerWidth < position.left + width ) {
+				this.$el.parent().parent().scrollLeft( moveTo - containerWidth + width );
+			}
 		}
 	} );
 
 	SlideEditor = View.extend( {
 		initialize: function( options ) {
-			this.editor = new SlidePageEditor( { model: this.model } );
+			this.editor = new SlidePageEditor( { parent: this, model: this.model } );
 			this.navigator = new SlidePageNavigator( {
 				el: options.$navigator,
 				model: this.model,
@@ -242,10 +272,17 @@
 			}
 
 			this.spinner.destroy();
-			this.navigator.onSelected( this.model.get( 'contents' )[this.model.get( 'pages' )[0]] );
+			this.navigator.onSelected( this.model.get( 'contents' )[this.model.selected] );
 
 			return this;
 		},
+		navigate: function( relativeIndex ) {
+			var pages = this.model.get( 'pages' );
+			var index = pages.indexOf( this.model.selected );
+			var newIndex = Math.min( Math.max( 0, index + relativeIndex ), pages.length - 1 );
+
+			controller.navigate( pages[newIndex], { trigger: true } );
+		}
 	} );
 
 } ) ();

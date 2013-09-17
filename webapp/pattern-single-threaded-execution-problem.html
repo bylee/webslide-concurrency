@@ -19,7 +19,7 @@
         }
     }
     
-    public class User extends Thread {
+    public class Person extends Thread {
         protected final Gate gate;
         protected final String myName;
         protected final String myAddress;
@@ -40,9 +40,9 @@
     
     public class Main {
         public static void main( String[] args ) {
-            new User( gate, "Alice", "Alaska" ).start();
-            new User( gate, "Bob", "Brazil" ).start();
-            new User( gate, "Chris", "Canada" ).start();
+            new Person( gate, "Alice", "Alaska" ).start();
+            new Person( gate, "Bob", "Brazil" ).start();
+            new Person( gate, "Chris", "Canada" ).start();
         }
     }
 </code></pre>

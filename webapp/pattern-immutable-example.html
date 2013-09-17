@@ -1,0 +1,48 @@
+<h3>Immutable</h3>
+<pre><code class="java">
+    public class Person {
+        private final String name;
+        
+        private final String address;
+        
+        public Person( String name, String address ) {
+            this.name = name;
+            this.address = address;
+        }
+        
+        public String getName() {
+            return this.name;
+        }
+        
+        public String getAddress() {
+            return this.address;
+        }
+        
+        public String toString() {
+            return getName() + " in " + getAddress();
+        }
+    }
+    
+    public class PersonPrinter extends Thread {
+        private Person person;
+        
+        public PersonPrinter( Person person ) {
+            this.person = person;
+        }
+        
+        public void run() {
+            while ( true ) {
+                System.out.println( person );
+            }
+        }
+    }
+    
+    public class Main {
+        public static void main( String[] args ) {
+            Person alice = new Person( "Alice", "Alaska" );
+            new PrintPersonThread( alice ).start();
+            new PrintPersonThread( alice ).start();
+            new PrintPersonThread( alice ).start();
+        }
+    }
+</code></pre>

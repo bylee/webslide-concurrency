@@ -118,7 +118,7 @@
 				slide.addPage( page );
 			} );
 
-			this.onSelected( data.pages[0] );
+			this.onSelected( _.find( data.pages, function( pid ) { return slide.selected == pid; } ) || data.pages[0] );
 
 			return ;
 		},
@@ -142,7 +142,9 @@
 
 		onSelected: function( id ) {
 			this.selected = id;
-			this.trigger( 'selectionChange', this.get( 'contents' )[id] );
+			if ( this.get( 'contents' ) ) {
+				this.trigger( 'selectionChange', this.get( 'contents' )[id] );
+			}
 		},
 
 		save: function( page, text ) {
