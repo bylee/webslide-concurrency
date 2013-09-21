@@ -38,6 +38,11 @@
 			this.editor.setValue( page.get( 'html' ) );
 			this.editor.clearSelection();
 			this.editor.focus();
+			var virtual = $( page.get( 'html' ) );
+			console.log( virtual.find( 'h1' )[0] );
+			console.log( virtual.find( 'h2' )[0] );
+			console.log( virtual.find( 'h3' )[0] );
+			//document.title = virtual.find( 'h1' ).val() || virtual.find( 'h2' ).val() || virtual.find( 'h3' ).val();
 		},
 		onPageChange: function( page ) {
 			if ( this.page == page ) {
@@ -65,6 +70,38 @@
 				event.preventDefault();
 			} );
 		},
+		createThumbnail: function( page, index ) {
+			var thumbnail = new SlidePageThumbnail( { parent: this, model: page } );
+			var $el = this.$el.find( '.scroll-contents' );
+			if ( 0 <= index ) {
+				this.$thumbnails[index].$el.after( thumbnail.render().$el );
+				this.$thumbnails.splice( index + 1, 0, thumbnail );
+			} else {
+				this.$thumbnails.push( thumbnail );
+				$el.append( thumbnail.render().$el );
+			}
+			thumbnail.show();
+		},
+		destroyThumbnail: function( page ) {
+			var pages = this.model.get( 'pages' );
+			var pid = page.get( 'id' );
+			var index = pages.indexOf( pid );
+			pages.splice( index, 1 );
+
+			this.$thumbnails[index].$el.remove();
+			this.$thumbnails.splice( index, 1 );
+			this.model.get( 'contents' )[pid] = null;
+			if ( this.selectedPage == page ) {
+				var target = '';
+				if ( index < pages.length ) {
+					target = pages[index];
+				} else if ( 0 < index ) {
+					target = pages[index-1];
+				} else {
+				}
+				controller.navigate( target, { trigger: true } );
+			}
+		},
 
 		renderThumbnail: function() {
 			var contents = this.model.get( 'contents' );	// SlidePage
@@ -73,10 +110,7 @@
 			$el.empty();
 			var $thumbnails = this.$thumbnails = [];
 			_.each( this.model.get( 'pages' ), function( pid ) {
-				var thumbnail = new SlidePageThumbnail( { parent: that, model: contents[pid] } );
-				$thumbnails.push( thumbnail );
-				$el.append( thumbnail.render().$el );
-				thumbnail.show();
+				that.createThumbnail( contents[pid] );
 			} );
 			this.onSelected( contents[this.model.selected] );
 		},
@@ -173,12 +207,32 @@
 			target = id;
 		},
 		addPage: function() {
+			var navigator = this;
 			new Popup( {
 				model: new Model( {
 					title: 'New Page',
 					buttonHandler: function( popup, id ) {
 						if ( 'ok' == id ) {
-							console.log( "Not implemented - New Page" );
+							var selectedPageId = navigator.selectedPage.get( 'id' );
+							var slide = navigator.model;
+							var name = popup.body.$name.val();
+							request( '/' + slide.get( 'id' ) + '/pages/' + name,
+								'PUT',
+								{ options: { after: selectedPageId } },
+								function() {
+									var pages = slide.get( 'pages' );
+									var index = pages.indexOf( selectedPageId );
+									pages.splice( index + 1, 0, name );
+									console.log( pages );
+									var page = slide.get( 'contents' )[name] = new SlidePage( {
+										id: name,
+										slide: slide,
+										loaded: true,
+										html: ''
+									} );
+									navigator.createThumbnail( page, index );
+								}
+							);
 						}
 					}
 				} ),
@@ -190,7 +244,30 @@
 			} ).open();
 		},
 		removePage: function() {
-			console.log( 'remove' );
+			var that = this;
+			var sid = this.model.get( 'id' );
+			var selectedPage = this.selectedPage;
+			var selectedPageId = selectedPage.get( 'id' );
+			QuestionPopup.open(
+				selectedPageId + '를 삭제하시겠습니까?',
+				function( answer ) {
+					if ( !answer ) {
+						return ;
+					}
+
+					var url = '/' + sid + '/pages/' + selectedPageId;
+					var navigator = that;
+					var slide = navigator.model;
+
+					request( url, 'DELETE', null, function() {
+						navigator.destroyThumbnail( selectedPage );
+					} );
+
+				}
+			);
+		},
+		onKeyinput: function( e ) {
+			console.log( 'key', e.keyCode );
 		},
 	} );
 
@@ -206,6 +283,18 @@
 
 			this.model.on( 'selectionStateChanged', this.selectionStateChanged, this );
 			this.$thumbnail = this.$( '.preview-thumbnail' );
+
+			var slide = new Slide();
+			slide.addPage( this.model );
+
+			/*
+			var iframe = this.$thumbnail[0];
+			this.$thumbnail.load( function() {
+				$( iframe.contentDocument.body ).append( '<script type="text/javascript" src="js/reveal.js"></script>' );
+				$( iframe.contentDocument.body ).append( new SlideShow( { model: slide, reveal: iframe.contentDocument.Reveal } ).render().$el );
+			} );
+			
+			*/
 			this.$thumbnail.attr( 'src', '/preview.html?id=' + this.model.get( 'id' ) );
 		},
 
@@ -215,7 +304,7 @@
 		},
 
 		onClick: function() {
-			this.options.parent.model.onSelected( this.model.get( 'id' ) );
+			controller.navigate( this.model.get( 'id' ), { trigger: true } );
 		},
 
 		selectionStateChanged: function() {

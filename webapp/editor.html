@@ -6,6 +6,8 @@
 	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 	<script type="text/javascript" src="js/ace/ace.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/head.js"></script>
+	<script type="text/javascript" src="js/reveal.js"></script>
 
 	<script type="text/javascript" src="js/lodash.js"></script>
 	<script type="text/javascript" src="js/backbone.js"></script>
@@ -16,6 +18,8 @@
 	<script type="text/javascript" src="js/webslide-editor.js"></script>
 
 	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="css/reveal.css" />
+	<link rel="stylesheet" href="css/reveal-theme/night.css" id="theme"/>
 	<!-- default, beige, sky, night, serif, simple -->
 	<link rel="stylesheet" href="css/style.css" />
 </head>
@@ -40,7 +44,6 @@
 
 				moveToPage: function( pid ) {
 					var pages = slide.get( 'pages' );
-					document.title = pid;
 					slide.onSelected( pid );
 				}
 			} );
@@ -100,7 +103,7 @@
 
 	<script id="tmpl-popup-footer" type="text/template">
 		<a class="btn" id="close" data-dismiss="modal">Close</a>
-		<a class="btn btn-primary" id="ok">OK</a>
+		<a class="btn btn-primary" id="ok" data-dismiss="modal">OK</a>
 	</script>
 
 
@@ -116,5 +119,22 @@
 			</fieldset>
 		</form>
 	</script>
+	<script id="tmpl-popup-question" type="text/template">
+		<form role="form" class="form-horizontal">
+			<fieldset>
+				<div class="control-group">
+					<div class="controls">
+						<label class="control-label" for="textinput"><%= message %></label>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</script>
+
+	<script id="tmpl-popup-question-footer" type="text/template">
+		<a class="btn" id="no" data-dismiss="modal">No</a>
+		<a class="btn btn-primary" id="yes" data-dismiss="modal">Yes</a>
+	</script>
+
 </html>
 <!--

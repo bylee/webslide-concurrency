@@ -41,12 +41,19 @@
 				this.model = this.model || m;
 			}
 		},
+		initView: function( options ) {
+			if ( this.model ) {
+				this.model.on( 'destroy', this.destroy, this );
+			}
+		},
 		init: function( options ) {
 		},
 		render: function() {
 			return this;
 		},
 		addSubView: function( model ) {
+		},
+		destroy: function() {
 		}
 	} );
 
@@ -73,11 +80,13 @@
 		template: 'popup',
 		initModel: function( options ) {
 			this.model = this.model || new Model( { title: 'Popup' } );
-			options.header = options.header || PopupHeader;
-			options.footer = options.footer || PopupFooter;
-			this.header = new options.header( { model: this.model, popup: this } );
-			this.body = new options.body( { model: this.model, popup: this } );
-			this.footer = new options.footer( { model: this.model, popup: this } );
+			this.headerType = options.header || this.headerType || PopupHeader;
+			this.bodyType = options.body;
+			this.footerType = options.footer || this.footerType || PopupFooter;
+
+			this.header = new this.headerType( { model: this.model, popup: this } );
+			this.body = new this.bodyType( { model: this.model, popup: this } );
+			this.footer = new this.footerType( { model: this.model, popup: this } );
 		},
 		render: function() {
 			this.$el.find( '.modal-content' ).append( this.header.render().$el );
@@ -93,7 +102,37 @@
 			} );
 			$( 'body' ).append( this.$el );
 			this.$el.find( '.modal' ).modal( { backdrop: 'static' } );
+		},
+		close: function() {
+			this.$el.find( '.modal' ).modal( 'hide' );
+
 		}
 	} );
+
+	MessagePopup = Popup.extend( {
+	} );
+
+
+	QuestionPopup = {
+		open: function( message, handler ) {
+			new Popup( {
+				model: new Model( {
+					title: 'Question',
+					message: message,
+					buttonHandler: function( popup, id ) {
+						handler( 'yes' == id );
+					}
+				} ),
+				body: View.extend( {
+					className: 'modal-body',
+					template: 'popup-question',
+					fields: ['name']
+				} ),
+				footer: PopupFooter.extend( {
+					template: 'popup-question-footer'
+				} )
+			} ).open();
+		}
+	};
 
 } ) ();

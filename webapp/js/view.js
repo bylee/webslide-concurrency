@@ -35,12 +35,14 @@
 
 	SlideShow = View.extend( {
 		className: 'reveal',
-		initialize: function() {
+		initialize: function( options ) {
+			this.reveal = options.reveal || Reveal;
 			this.model.on( 'load', this.render, this );
 			this.$slides = $( '<div class="slides"></div>' );
 			this.$el.html( this.$slides );
 		},
 		render: function() {
+			document.title = this.model.get( 'id' );
 			var contents = this.model.get( 'contents' );
 			if ( !contents ) {
 				return this;
@@ -68,7 +70,7 @@
 				that.$slides.append( pageView.render().$el );
 			} );
 			var revealOpts = this.model.toJSON();
-			Reveal.initialize( revealOpts );
+			this.reveal.initialize( revealOpts );
 
 			return this;
 		}

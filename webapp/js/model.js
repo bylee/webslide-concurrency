@@ -19,6 +19,9 @@
 	} );
 
 	SlidePage = Model.extend( {
+		url: function() {
+			return '/' + this.get( 'id' );
+		},
 		fetch: function() {
 			var page = this;
 			var slide = this.get( 'slide' );
