@@ -1,0 +1,25 @@
+<h3>Balking - example</h3>
+<pre><code class="java">
+    public class AutoSaver extends Thread {
+        protected final DataStore data;
+        
+        public AutoSaver( DataStore data ) {
+            this.data = data;
+        }
+        
+        public void run() {
+            try {
+                for ( int i = 0 ; i < 1000 ; ++i ) {
+                    data.save();
+                    trySleep( 10000 );
+                }
+            } catch( IOException e ) {
+                e.printStackTrace();
+            } catch( InterruptedException e ) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
+</code></pre>

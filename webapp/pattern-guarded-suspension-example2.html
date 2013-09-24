@@ -1,0 +1,17 @@
+<h3>Guarded suspension - example</h3>
+<pre><code class="java">
+    public class Server extends Thread {
+        protected final RequestQueue queue;
+        public Server( final RequestQueue queue ) {
+            this.queue = queue;
+        }
+    }
+    
+    public void run() {
+        for ( int i = 0, i<10000 ; ++i ) {
+            final Request request = queue.get();
+            System.out.println( "I got " + request );
+        }
+    }
+
+</code></pre>

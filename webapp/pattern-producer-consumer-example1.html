@@ -1,0 +1,31 @@
+<h3>Produce-Consumer - example</h3>
+<pre><code class="java">
+    
+    public Cook extends Thread {
+    
+        protected static int id = 0;
+        
+        protected final Random r = new Random( System.currentTimeMillis() );
+        
+        protected final Table table;
+        
+        public Cook( final Table table ) {
+            this.table = table;
+        }
+        
+        public void run() {
+            try {
+                while ( true ) {
+                    trySleep( r.nextInt( 1000 ) );
+                    table.put( "Cake No. " + nextId() );
+                }
+            } catch( InterruptedException e ) {
+            }
+        }
+        
+        synchronized protected static int nextId() {
+            return id++;
+        }
+    }
+    
+</code></pre>

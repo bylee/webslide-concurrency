@@ -1,0 +1,28 @@
+<h3>Balking - example</h3>
+<pre><code class="java">
+    public class ChangeAndSaveCommand extends Thread {
+        protected final Random r = new Random( System.currentTimeMillis() );
+
+        protected final DataStore data;
+        
+        public ChangeAndSaveCommand( DataStore data ) {
+            this.data = data;
+        }
+        
+        public void run() {
+            try {
+                for ( int i = 0 ; i < 1000 ; ++i ) {
+                    data.change( "No." + i );
+                    data.save();
+                    trySleep( r.nextInt( 1000 ) );
+                }
+            } catch( IOException e ) {
+                e.printStackTrace();
+            } catch( InterruptedException e ) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
+</code></pre>

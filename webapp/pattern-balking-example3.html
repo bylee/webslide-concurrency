@@ -1,0 +1,38 @@
+<h3>Balking - example</h3>
+<pre><code class="java">
+    public class DataStore extends Thread {
+        protected final String filename;
+        
+        protected String content;
+        
+        protected boolean changed;
+        
+        public DataStore( String filename ) {
+            this.filename = filename;
+        }
+        
+        synchronized public void change( final String newContent ) {
+            this.content = newContent;
+            this.changed = true;
+        }
+        
+        synchronized public void save() throws IOException {
+            if ( !changed ) {
+                return ;
+            }
+            doSave();
+            changed = false;
+        }
+        
+        protected void doSave() throws IOException {
+            final FileWriter writer = new FileWriter( filename );
+            try {
+                writer.write( this.content );
+            } finally {
+                tryClose( writer );
+            }
+        }
+
+    }
+    
+</code></pre>

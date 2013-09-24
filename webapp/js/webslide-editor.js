@@ -18,7 +18,7 @@
 			this.editor.commands.addCommand( {
 				name: 'Save file',
 				bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
-				exec: function() { model.save( that.page, editor.getValue() ); }
+				exec: function() { model.save( that.page, editor.getValue() ); that.render(); }
 			} );
 			this.editor.commands.addCommand( {
 				name: 'Next Page',
@@ -33,16 +33,23 @@
 			model.on( 'pageChange', this.onPageChange, this );
 		},
 
+		render: function() {
+			var virtual = $( this.page.get( 'html' ) );
+			var $candidate = virtual.filter( 'h1, h2, h3' );
+			if ( $candidate ) {
+				var total = this.model.get( 'pages' ).length;
+				var index = this.model.get( 'pages' ).indexOf( this.page.get( 'id' ) );
+				document.title = index + '/' + total + '-' + $candidate.text();
+			}
+			return this;
+		},
+
 		setContents: function( page ) {
 			this.page = page;
 			this.editor.setValue( page.get( 'html' ) );
 			this.editor.clearSelection();
 			this.editor.focus();
-			var virtual = $( page.get( 'html' ) );
-			console.log( virtual.find( 'h1' )[0] );
-			console.log( virtual.find( 'h2' )[0] );
-			console.log( virtual.find( 'h3' )[0] );
-			//document.title = virtual.find( 'h1' ).val() || virtual.find( 'h2' ).val() || virtual.find( 'h3' ).val();
+			this.render();
 		},
 		onPageChange: function( page ) {
 			if ( this.page == page ) {
@@ -231,6 +238,7 @@
 										html: ''
 									} );
 									navigator.createThumbnail( page, index );
+									controller.navigate( name, { trigger: true } );
 								}
 							);
 						}

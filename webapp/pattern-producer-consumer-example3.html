@@ -1,0 +1,46 @@
+<h3>Produce-Consumer - example</h3>
+<pre><code class="java">
+    
+    public Table {
+        protected final String[] plates;
+        
+        protected int head;
+        
+        protected int tail;
+        
+        protected int count;
+
+        public Table( final int count ) {
+            this.plates = new String[count];
+            this.head = 0;
+            this.tail = 0;
+            this.count = 0;
+        }
+        
+        synchronized public void put( String cake ) throws InterruptedException {
+            while( count >= plates.length ) {
+                wait();
+            }
+            
+            plates[tail] = cake;
+            tail = ( tail + 1 ) % plates.length;
+            ++count;
+            this.notifyAll();
+        }
+        
+        synchronized public String take() throws InterruptedException {
+            while ( count <= 0 ) {
+                this.wait();
+            }
+            
+            String cake = plates[this.head];
+            haed = ( head + 1 ) % plates.length;
+            --count;
+            this.notifyAll();
+            return cake;
+        }
+
+
+    }
+    
+</code></pre>

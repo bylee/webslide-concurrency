@@ -1,0 +1,17 @@
+<h3>Guarded suspension</h3>
+<ul>
+    <li>Safety - Risk to break</li>
+    <ul>
+        <li>What happens if server is slow?</li>
+    </ul>
+    <li>Liveness - Risk to wait permanently
+        <ul>
+            <li>No method to escape wait() without put method</li>
+        </ul>
+    </li>
+    <li>Reusability - Increase reusability
+        <ul>
+            <li>Each RequestQueue instances have the responsibility for thread control.</li>
+        </ul>
+    </li>
+</ul>

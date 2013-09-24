@@ -78,6 +78,9 @@
 
 	Popup = View.extend( {
 		template: 'popup',
+		events: {
+			'keyup': 'onKeypress'
+		},
 		initModel: function( options ) {
 			this.model = this.model || new Model( { title: 'Popup' } );
 			this.headerType = options.header || this.headerType || PopupHeader;
@@ -103,10 +106,16 @@
 			$( 'body' ).append( this.$el );
 			this.$el.find( '.modal' ).modal( { backdrop: 'static' } );
 		},
+
 		close: function() {
 			this.$el.find( '.modal' ).modal( 'hide' );
-
+		},
+		onKeypress: function( e ) {
+			if ( e.keyCode == 13 ) {
+				this.$el.find( '.btn-primary' ).click();
+			}
 		}
+
 	} );
 
 	MessagePopup = Popup.extend( {

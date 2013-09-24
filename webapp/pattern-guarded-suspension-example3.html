@@ -1,0 +1,21 @@
+<h3>Guarded suspension - example</h3>
+<pre><code class="java">
+    public class RequestQueue {
+        protected final Queue&lt;Request> queue;
+        public synchronized Request get() {
+            while ( queue.peek() == null ) {
+                try {
+                    wait();
+                } catch( InterruptedException e ) {
+                }
+            }
+            return queue.remove();
+        }
+        
+        public synchronized void put( final Request request ) {
+            queue.offer( request );
+            notifyAll();
+        }
+    }
+
+</code></pre>

@@ -1,0 +1,26 @@
+<h3>Produce-Consumer - example</h3>
+<pre><code class="java">
+    
+    public Guest extends Thread {
+    
+        protected final Random r = new Random( System.currentTimeMillis() );
+        
+        protected final Table table;
+        
+        public Guest( final Table table ) {
+            this.table = table;
+        }
+        
+        public void run() {
+            try {
+                while ( true ) {
+                    String cake = table.take();
+                    trySleep( r.nextInt( 1000 ) );
+                }
+            } catch( InterruptedException e ) {
+            }
+        }
+        
+    }
+    
+</code></pre>
