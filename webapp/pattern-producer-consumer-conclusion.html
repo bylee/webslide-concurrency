@@ -1,0 +1,23 @@
+<h3>Producer-Consumer</h3>
+<ul>
+    <li>Safety - Less risk to break</li>
+    <ul>
+        <li>Safe although server or client is slow</li>
+    </ul>
+    <li>Liveness - Risk to wait permanently
+        <ul>
+            <li>No method to escape wait() without put method</li>
+            <li>Exclusion control between consumers</li>
+        </ul>
+    </li>
+    <li>Performance - Bottle neck
+        <ul>
+            <li>Better modularity as aspect to the <a target="blank" href="http://doctord.dyndns.org/courses/topics/Networks/Probability_and_Queuing/Performance_Modeling/img221.gif">Queuing network model</a></li>
+        </ul>
+    </li>
+    <li>Reusability - Increase reusability
+        <ul>
+            <li>Each RequestQueue instances have the responsibility for thread control.</li>
+        </ul>
+    </li>
+</ul>

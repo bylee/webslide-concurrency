@@ -18,15 +18,8 @@
 			_.bindAll( this );
 			this.initModel( options );
 
-			this.$el.attr( 'view-cid', this.cid );
-			var m = json( this.model );
-			this.$el.html( _.template( $( '#tmpl-' + this.template ).html() )( m ) );
-			if ( this.fields ) {
-				for ( index in this.fields ) {
-					var field = this.fields[index];
-					this['$' + field] = this.$el.find( '#' + field );
-				}
-			}
+			this.initView( options );
+
 			this.init( options );
 			if ( this.collection ) {
 				this.collection.fetch();
@@ -42,10 +35,20 @@
 			}
 		},
 		initView: function( options ) {
+			this.$el.attr( 'view-cid', this.cid );
+			var m = json( this.model );
+			this.$el.html( _.template( $( '#tmpl-' + this.template ).html() )( m ) );
+			if ( this.fields ) {
+				for ( index in this.fields ) {
+					var field = this.fields[index];
+					this['$' + field] = this.$el.find( '#' + field );
+				}
+			}
 			if ( this.model ) {
 				this.model.on( 'destroy', this.destroy, this );
 			}
 		},
+
 		init: function( options ) {
 		},
 		render: function() {
@@ -82,6 +85,9 @@
 			'keyup': 'onKeypress'
 		},
 		initModel: function( options ) {
+			if ( options.events ) {
+
+			}
 			this.model = this.model || new Model( { title: 'Popup' } );
 			this.headerType = options.header || this.headerType || PopupHeader;
 			this.bodyType = options.body;
@@ -103,16 +109,30 @@
 			this.$el.on( 'hidden.bs.modal', function() {
 				that.$el.remove();
 			} );
+			this.$el.on( 'shown.bs.modal', function() {
+				that.$el.find( '.initial-focus' ).focus();
+				that.popupOpened();
+			} );
 			$( 'body' ).append( this.$el );
 			this.$el.find( '.modal' ).modal( { backdrop: 'static' } );
+
 		},
 
 		close: function() {
 			this.$el.find( '.modal' ).modal( 'hide' );
 		},
+
+		popupOpened: function() {
+			if ( this.model.get( 'afterOpen' ) ) {
+				this.model.get( 'afterOpen' )();
+			}
+		},
+		
 		onKeypress: function( e ) {
 			if ( e.keyCode == 13 ) {
-				this.$el.find( '.btn-primary' ).click();
+				if ( !this.$el.find( '.btn-primary' ).prop( 'disabled' ) ) {
+					this.$el.find( '.btn-primary' ).click();
+				}
 			}
 		}
 

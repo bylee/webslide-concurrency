@@ -1,0 +1,35 @@
+<h3>Read-Write Lock - example</h3>
+<pre><code class="java">
+    
+    public class DataStore {
+        protected final char[] buffer;
+        
+        protected final ReadWriteLock lock = new ReadWriteLock();
+        
+        public DataStore( int size ) {
+            this.buffer = new char[size];
+            Arrays.fill( this.buffer, '*' );'
+        }
+        
+        public char[] read() throws InterruptedException {
+            lock.lockForRead();
+            try {
+                char[] returnBuffer = new char[buffer.size];
+                System.arrayCopy( buffer, 0, returnBuffer, 0, buffer.size );
+            } finally {
+                lock.unlockForRead();
+            }
+        }
+        
+        public void write( char ch ) throws InterruptedException {
+            lock.lockForWrite();
+            try {
+                Arrays.fill( buffer, ch );
+            } finally {
+                lock.unlockForWrite();
+            }
+            
+        }
+    }
+    
+</code></pre>

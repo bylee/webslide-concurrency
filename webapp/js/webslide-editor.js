@@ -215,9 +215,11 @@
 		},
 		addPage: function() {
 			var navigator = this;
-			new Popup( {
+			var popup = new NewPagePopup( {
 				model: new Model( {
+					value: this.selectedPage.get( 'id' ),
 					title: 'New Page',
+					pages: this.model.get( 'pages' ),
 					buttonHandler: function( popup, id ) {
 						if ( 'ok' == id ) {
 							var selectedPageId = navigator.selectedPage.get( 'id' );
@@ -242,6 +244,8 @@
 								}
 							);
 						}
+					},
+					afterOpen: function() {
 					}
 				} ),
 				body: View.extend( {
@@ -379,6 +383,23 @@
 			var newIndex = Math.min( Math.max( 0, index + relativeIndex ), pages.length - 1 );
 
 			controller.navigate( pages[newIndex], { trigger: true } );
+		}
+	} );
+
+
+	NewPagePopup = Popup.extend( {
+		events: {
+			'keyup #name': 'checkDuplication'
+		},
+		popupOpened: function() {
+			this.checkDuplication( { target: {value: this.model.get( 'value' ) } } );
+		},
+		checkDuplication: function( e ) {
+			if ( 0 <= this.model.get( 'pages' ).indexOf( e.target.value ) ) {
+				this.$el.find( '.btn-primary' ).attr( 'disabled', true );
+			} else {
+				this.$el.find( '.btn-primary' ).removeAttr( 'disabled' );
+			}
 		}
 	} );
 

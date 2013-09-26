@@ -1,0 +1,26 @@
+<h3>Read-Write Lock - example</h3>
+<pre><code class="java">
+    
+    public class Writer extends Thread {
+        protected final Random r = new Random();
+        protected final DataStore data;
+        
+        protected final char[] filler;
+        
+        public Writer( final DataStore data, final char[] filler ) {
+            this.data = data;
+            this.filler = filler;
+        }
+        
+        public void run() {
+            try {
+                for ( int i = 0 ; i < filler.length ; ++i ) {
+                    data.write( filler[i] );
+                    trySleep( r.nextInt( 5000 ) );
+                }
+            } catch( InterruptedException e ) {
+            }
+        }
+    }
+    
+</code></pre>

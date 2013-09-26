@@ -1,0 +1,48 @@
+<h3>Read-Write Lock - example</h3>
+<pre><code class="java">
+    
+    public class ReadWriteLock {
+        
+        protected int readers = 0;
+        
+        protected int writers = 0;
+        
+        protected int waitersForWriting = 0;
+        
+        protected boolean preferWriting = true;
+        
+        synchronized public void lockForRead() throws InterruptedException {
+            while ( writers > 0  || ( preferWriting &amp;&amp; waitersForWriting > 0 ) {
+                this.wait();
+            }
+            ++readers;
+        }
+        
+        synchronized public void unlockForRead() {
+            --readers;
+            preferWriting = true;
+            this.notifyAll();
+        }
+        
+        synchronized public void lockForWrite() throws InterruptedException {
+            ++waitersForWriting;
+            try {
+                while( readers > 0 || writers > 0 ) {
+                    this.wait();
+                }
+            } finally {
+                --waitersForWriting
+            }
+            
+            ++writers;
+        }
+        
+        synchronized public void unlockForWrite() {
+            --writers;
+            preferWriting = true;
+            this.notifyAll();
+        }
+        
+    }
+    
+</code></pre>

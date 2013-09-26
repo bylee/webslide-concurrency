@@ -1,0 +1,19 @@
+<h3>Worker Thread - example</h3>
+<pre><code class="java">
+    
+    public class Worker extends Thread {
+        protected final RequestQueue queue;
+        
+        public Worker( final RequestQueue queue ) {
+            this.queue = queue;
+        }
+        
+        public void run() {
+            while ( true ) {
+                Request request = (Request) queuue.takeRequest();
+                request.execute();
+            }
+        }
+    }
+    
+</code></pre>

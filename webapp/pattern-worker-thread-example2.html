@@ -1,0 +1,19 @@
+<h3>Worker Thread - example</h3>
+<pre><code class="java">
+    
+    public class Request {
+        protected static final Random r = new Random();
+        
+        protected final String message;
+        
+        public Request( final String message ) {
+            this.message = message;
+        }
+        public void execute() {
+            System.out.println( this.message );
+            trySleep( r.nextInt( 1000 ) );
+        
+        }
+    }
+    
+</code></pre>

@@ -1,0 +1,14 @@
+<h3>Thread per Message - example</h3>
+<pre><code class="java">
+    
+    public class Host {
+        protected final Printer printer = new Printer();
+        
+        public void request( final int count, final String message ) {
+            new Thread() {
+                printer.handle( count, message )
+            }.start();
+        }
+    }
+    
+</code></pre>

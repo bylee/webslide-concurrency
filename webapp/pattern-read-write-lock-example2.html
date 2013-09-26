@@ -1,0 +1,18 @@
+<h3>Read-Write Lock - example</h3>
+<pre><code class="java">
+    
+    public class Reader extends Thread {
+        protected final DataStore data;
+        public Reader( final DataStore data ) {
+            this.data = data;
+        }
+        
+        public void run() {
+            try {
+                System.out.println( new String( data.read() ) );
+            } catch( InterruptedException e ) {
+            }
+        }
+    }
+
+</code></pre>
