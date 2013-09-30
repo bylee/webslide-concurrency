@@ -1,0 +1,30 @@
+<h3>Atomic action - volatile</h3>
+<pre><code class="java">
+    
+    int step = 2;
+    volatile long b = 0;
+    
+    public long countUp() {
+        return b += step;
+    }
+    
+</code></pre>
+
+<pre><code class="java">
+    
+    int step = 2;
+    long b = 0;
+    
+    public long countUp() {
+        long temp = 0;
+        synchronized ( this ) {
+            temp = b;
+        }
+        
+        synchronized( this ) {
+            return b = temp + 2;
+        }
+        
+    }
+    
+</code></pre>

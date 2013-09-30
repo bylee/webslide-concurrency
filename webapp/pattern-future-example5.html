@@ -1,0 +1,23 @@
+<h3>Future - example</h3>
+<pre><code class="java">
+
+public class Host {
+    public Data request( final int count, final String msg ) {
+        final Future f = new Future();
+        
+            new Thread() {
+                public void run() {
+                    String data = "";
+                    for ( int i = 0 ; i < count ; ++i ) {
+                        data += msg;
+                    }
+                    final RealData data = new Data( data );
+                    f.setData( data );
+                }
+            }.start();
+        
+        return f;
+    }
+}
+
+</code></pre>

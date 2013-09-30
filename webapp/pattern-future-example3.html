@@ -1,0 +1,25 @@
+<h3>Future - example</h3>
+<pre><code class="java">
+
+public class Future implements Data {
+
+    protected Data data;
+    
+    synchronized public void setData( Data data ) {
+        this.data = data;
+        notifyAll();
+    }
+    
+    synchronized public String getContent() {
+    
+        while( null == data ) {
+            try {
+                wait();
+            } catch ( InterruptedExceptioni e ) {
+            }
+        }
+        
+        return data.getResult();
+    }
+}
+</code></pre>

@@ -1,0 +1,17 @@
+<h3>Future - example</h3>
+<pre><code class="java">
+
+public class RealData implements Data {
+
+    protected String data;
+    
+    public RealData( String data ) {
+        this.data = data;
+    }
+    
+    synchronized public String getContent() {
+    
+        return data;
+    }
+}
+</code></pre>

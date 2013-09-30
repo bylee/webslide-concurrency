@@ -1,0 +1,30 @@
+<h3>Atomic action - AtomicXXXX</h3>
+
+<pre><code class="java">
+    
+    int step = 2;
+    long b = 0;
+    
+    public long countUp() {
+        long temp = 0;
+        synchronized ( this ) {
+            temp = b;
+            return b = temp + 2;
+        }
+        
+        
+    }
+    
+</code></pre>
+
+<pre><code class="java">
+    
+    int step = 2;
+    AtomicLong b = new AtomicLong();
+    
+    public long countUp() {
+        long temp = 0;
+        return b.addAndGet();
+    }
+    
+</code></pre>

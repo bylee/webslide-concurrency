@@ -1,0 +1,15 @@
+<h3>On-demand holder</h3>
+<pre><code class="java">
+    class Singleton {
+    
+        private static class Holder {
+            public static Singleton instance = new Singleton();
+        }
+        
+        public static Singleton getInstance() {
+            return Holder.instance;
+        }
+        
+    }
+    
+</code></pre>

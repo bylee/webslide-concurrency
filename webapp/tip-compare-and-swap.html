@@ -1,0 +1,24 @@
+<h3>Compare And Swap (CAS)</h3>
+<ul>
+    <li>Known as non-blocking algorithm</li>
+    <li>Wait-free, Lock-free, Obstruction-free</li>
+    <li>The "lock-free" is meant to CAS narrowly.</li>
+    <li>Optimistic concurrent control
+        <ul>
+            <li>Begin</li>
+            <li>Modify</li>
+            <li>Validate</li>
+            <li>Commit / Rollback</li>
+        </ul>
+    </li>
+    <li>sun.misc.Unsafe</li>
+    <li>The AtomicXXXs are implemented by sun.misc.Unsafe</li>
+    <li>Performance
+        <ul>
+            <li>sun.misc.Unsafe(CAS) > AtomicXXXXs > synchronized > java.util.concurrent.locks</li>
+            <li>The high performance server is different.</li>
+        </ul>
+    </li>
+    <li>ABA Problem</li>
+    <li>cf) Software transactional memory</li>
+</ul>

@@ -1,0 +1,17 @@
+<h3>Two phase termination - example</h3>
+<pre><code class="java">
+    
+public class Main {
+    public static void main( final String[] args ) throws InterruptedException {
+        Daemon daemon = new Daemon();
+        daemon.start();
+        
+        while ( !"quit".equals( userinput() ) {
+        }
+        
+        t.shutdownPlease();
+        t.join();
+    }
+}
+
+</code></pre>

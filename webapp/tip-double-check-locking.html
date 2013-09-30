@@ -1,0 +1,26 @@
+<h3>Double-Check Locking</h3>
+<pre><code class="java">
+    class Singleton {
+        public static Singleton instance = null;
+        
+        synchronized public static Singleton getInstance() {
+            if ( null == instance ) {
+                instance = new Singleton();
+            }
+            return instance;
+        }
+        
+        public static Singleton getInstance2() {
+            if ( null == instance ) {
+                synchronized( Singleton.class ) {
+                    if ( null == instance ) {
+                        instance = new Singleton();
+                    }
+                }
+            }
+            return instance;
+        }
+        
+    }
+    
+</code></pre>

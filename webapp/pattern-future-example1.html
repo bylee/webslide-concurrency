@@ -1,0 +1,17 @@
+<h3>Future - example</h3>
+<pre><code class="java">
+    
+    public class Main {
+        public static void main( final String[] args ) {
+            Host host = new Host();
+            Future f1 = host.request( 10, "Alice" );
+            Future f2 = host.request( 10, "Bob" );
+            Future f3 = host.request( 10, "Cindy" );
+            
+            System.out.println( "Result1: " + f1.getContent() );
+            System.out.println( "Result2: " + f2.getContent() );
+            System.out.println( "Result3: " + f3.getContent() );
+        }
+    }
+    
+</code></pre>

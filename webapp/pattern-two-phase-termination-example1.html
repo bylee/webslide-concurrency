@@ -1,0 +1,35 @@
+<h3>Two phase termination - example</h3>
+<pre><code class="java">
+    
+    public class Daemon extends Thread {
+        protected volatile boolean shutdownRequest = false;
+        public void shutdownPlease() {
+            shutdownPlease = true;
+            interrupt();
+        }
+        
+        public void run() {
+            System.out.println( "Start daemon" );
+            try {
+                while ( shutdownPlease ) {
+                    doWork();
+                }
+            } catch( InterruptedException e ) {
+            } finally
+            {
+                doShutdown();
+            }
+        }
+        
+        protected void doWork() InterruptedException {
+            // Do something?
+            
+            Thread.sleep( 500 );    // or wait(), join()
+        }
+        
+        protected void doShutdown() {
+            System.out.println( "Stop daemon" );
+        }
+    }
+    
+</code></pre>
