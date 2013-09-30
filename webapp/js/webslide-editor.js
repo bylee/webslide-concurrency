@@ -232,7 +232,6 @@
 									var pages = slide.get( 'pages' );
 									var index = pages.indexOf( selectedPageId );
 									pages.splice( index + 1, 0, name );
-									console.log( pages );
 									var page = slide.get( 'contents' )[name] = new SlidePage( {
 										id: name,
 										slide: slide,
