@@ -186,7 +186,7 @@
 		move: function( id, nextTo ) {
 			console.log( "Move", id, "next to", nextTo );
 			var taht = this;
-			request( '/pages/' + id, 'PUT', { next: nextTo }, function() {
+			request( '/slides/' + this.get( 'slide' ) + '/' + id + '.html', 'PUT', { next: nextTo }, function() {
 			} );
 			var pages = that.model.get( 'pages' );
 			var step = (nextTo)?0:1;
@@ -225,7 +225,7 @@
 							var selectedPageId = navigator.selectedPage.get( 'id' );
 							var slide = navigator.model;
 							var name = popup.body.$name.val();
-							request( '/' + slide.get( 'id' ) + '/pages/' + name,
+							request( '/slides/' + slide.get( 'id' ) + '/' + name + '.html',
 								'PUT',
 								{ options: { after: selectedPageId } },
 								function() {
@@ -266,7 +266,7 @@
 						return ;
 					}
 
-					var url = '/' + sid + '/pages/' + selectedPageId;
+					var url = '/slides/' + sid + '/' + selectedPageId + '.html';
 					var navigator = that;
 					var slide = navigator.model;
 

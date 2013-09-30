@@ -20,12 +20,11 @@
 
 	SlidePage = Model.extend( {
 		url: function() {
-			return '/' + this.get( 'id' );
+			return '/slides/' + this.get( 'slide' ).get( 'id' ) + '/' + this.get( 'id' ) + '.html';
 		},
 		fetch: function() {
 			var page = this;
-			var slide = this.get( 'slide' );
-			$.get( '/pages/' + this.get( 'id' ), function( html ) {
+			$.get( this.url(), function( html ) {
 				page.set( 'html', html );
 				page.set( 'loaded', true );
 				page.trigger( 'contentChanged', page );
@@ -110,7 +109,7 @@
 			this.on( 'load', this.onLoad, this );
 		},
 		url: function() {
-			return '/slides/' + this.get( 'id' );
+			return '/slides/' + this.get( 'id' ) + '.json';
 		},
 		parse: function( data ) {
 			var slide = this;
@@ -153,7 +152,7 @@
 		save: function( page, text ) {
 			var selected = this.selected;
 			if ( selected ) {
-				$.ajax( '/pages/' + selected, { type: 'POST', data: text, success: function() {
+				$.ajax( '/slides/' + this.get( 'id' ) + '/' + selected + '.html', { type: 'POST', data: text, success: function() {
 					page.set( 'html', text );
 					page.trigger( 'contentChanged' );
 				} } );
