@@ -1,4 +1,5 @@
 ( function() {
+    origin = '/webslide-concurrency'
 	request = function( url, type, data, success ) {
 		return $.ajax( url, {
 			type: type,
