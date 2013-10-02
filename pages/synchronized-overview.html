@@ -1,7 +1,9 @@
-<h3>synchronized</h3>
-<p>
-    Monitor - an object or module executed with mutual exclusion.
-</p>
+<h3>Basic API - synchronized</h3>
+<ul>
+    <li>Monitor - an object or module executed with mutual exclusion.</li>
+    <li>Actually, It's the mutex.( cf. java.util.concurrent.Semaphore )</li>
+    <li>If other is having the monitor, You can acquire it. Or the thread state will be blocked</li>
+</ul>
 <pre>
     <code class="java">
     synchronized public void run() {
