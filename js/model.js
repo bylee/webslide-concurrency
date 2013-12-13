@@ -47,7 +47,7 @@
 				//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 			
 				// Syntax highlight for <code> elements
-				{ src: '/js/highlight.js', async: true, callback: function() { hljs.initHighlighting(); } },
+				{ src: '/webslide-concurrency/js/highlight.js', async: true, callback: function() { hljs.initHighlighting(); } },
 			
 				// Zoom in and out with Alt+click
 				//{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
